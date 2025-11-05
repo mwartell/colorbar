@@ -1,0 +1,45 @@
+{
+  "name": "colorbar",
+  "displayName": "Colorbar",
+  "description": "Apply workbench.colorCustomizations to the current workspace",
+  "version": "0.0.1",
+  "publisher": "your-publisher",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [
+    "onCommand:colorbar.apply"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "colorbar.apply",
+        "title": "Colorbar: Apply Workspace Color Customizations"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -w -p ./"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mwartell/colorbar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mwartell/colorbar/issues"
+  },
+  "homepage": "https://github.com/mwartell/colorbar#readme",
+  "devDependencies": {
+    "@types/node": "^24.10.0",
+    "@types/vscode": "^1.105.0",
+    "@vscode/test-electron": "^2.5.2",
+    "typescript": "^5.9.3"
+  }
+}
