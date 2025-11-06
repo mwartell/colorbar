@@ -2,7 +2,7 @@
   "name": "colorbar",
   "displayName": "Colorbar",
   "description": "Apply workbench.colorCustomizations to the current workspace",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "publisher": "mwartell",
   "license": "MIT",
   "engines": {
