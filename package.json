@@ -1,6 +1,6 @@
 {
   "name": "colorbar-msw",
-  "displayName": "colorbar",
+  "displayName": "colorbar-msw",
   "description": "Set per-workspace title bar and activity bar colors in VS Code.",
   "version": "0.2.1",
   "publisher": "mwartell",
