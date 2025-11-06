@@ -6,3 +6,6 @@
 **/.vscode-test/**
 **/tsconfig.json
 **/.gitignore
+**/.env
+images/*.xcf
+justfile
