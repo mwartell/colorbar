@@ -4,9 +4,13 @@ import * as vscode from 'vscode';
 const INSTRUCTIONS = `Pick a color to customize your workspace UI.
 
 This command updates these settings in .vscode/settings.json:
+
 - workbench.colorCustomizations.titleBar.activeBackground => #RRGGBB
 - workbench.colorCustomizations.titleBar.inactiveBackground => #RRGGBBa4 (same color with alpha a4)
+- workbench.colorCustomizations.titleBar.activeForeground => auto (black/white for contrast)
+- workbench.colorCustomizations.titleBar.inactiveForeground => auto (black/white for contrast)
 - workbench.colorCustomizations.activityBar.background => #RRGGBB
+- workbench.colorCustomizations.activityBar.foreground => auto (black/white for contrast)
 
 Use Apply to save, Reset to remove these keys, or Cancel/Escape to revert to the previous values.`;
 
@@ -49,7 +53,10 @@ async function pickHexColorWebview(defaultColor: string): Promise<void> {
     const keys = [
         'titleBar.activeBackground',
         'titleBar.inactiveBackground',
-        'activityBar.background'
+        'titleBar.activeForeground',
+        'titleBar.inactiveForeground',
+        'activityBar.background',
+        'activityBar.foreground'
     ];
     const snapshot = await snapshotColorValues(keys);
 
@@ -58,10 +65,14 @@ async function pickHexColorWebview(defaultColor: string): Promise<void> {
     const applyColor = async (sixHex: string) => {
         const active = sixHex;
         const inactive = `${sixHex}a4`;
+        const fg = pickContrastingForeground(sixHex);
         const patch: Record<string, string> = {
             'titleBar.activeBackground': active,
             'titleBar.inactiveBackground': inactive,
-            'activityBar.background': active
+            'titleBar.activeForeground': fg,
+            'titleBar.inactiveForeground': fg,
+            'activityBar.background': active,
+            'activityBar.foreground': fg
         };
         await mergeColorCustomizations(patch);
     };
@@ -201,6 +212,31 @@ function toSixDigitHex(input: string): string {
     if (/^[0-9a-fA-F]{3}$/.test(raw)) return `#${raw.toLowerCase().split('').map(c => c + c).join('')}`;
     if (/^[0-9a-fA-F]{8}$/.test(raw)) return `#${raw.slice(0, 6).toLowerCase()}`;
     return '#1f6feb';
+}
+
+function pickContrastingForeground(bgSixHex: string): string {
+    // Choose black or white text based on WCAG contrast ratio
+    const lum = relativeLuminance(bgSixHex);
+    const contrastWithBlack = (lum + 0.05) / 0.05; // black luminance = 0
+    const contrastWithWhite = 1.05 / (lum + 0.05); // white luminance = 1
+    return contrastWithBlack >= contrastWithWhite ? '#000000' : '#ffffff';
+}
+
+function relativeLuminance(hex: string): number {
+    const { r, g, b } = hexToRgb01(hex);
+    const lin = (c: number) => (c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4));
+    const R = lin(r);
+    const G = lin(g);
+    const B = lin(b);
+    return 0.2126 * R + 0.7152 * G + 0.0722 * B;
+}
+
+function hexToRgb01(hex: string): { r: number; g: number; b: number } {
+    const six = toSixDigitHex(hex).slice(1);
+    const r = parseInt(six.slice(0, 2), 16) / 255;
+    const g = parseInt(six.slice(2, 4), 16) / 255;
+    const b = parseInt(six.slice(4, 6), 16) / 255;
+    return { r, g, b };
 }
 
 function getNonce(): string {
