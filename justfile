@@ -11,7 +11,7 @@ deps:
     npm install
 
 # Compile TypeScript to out/
-build:
+build: deps
     npm run compile
 
 # Create a VSIX in the repo root (runs build first)

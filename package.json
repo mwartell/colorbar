@@ -13,9 +13,7 @@
   ],
   "icon": "images/colorbar-logo.png",
   "main": "./out/extension.js",
-  "activationEvents": [
-
-  ],
+  "activationEvents": [],
   "contributes": {
     "commands": [
       {
@@ -43,5 +41,8 @@
     "@vscode/test-electron": "^2.5.2",
     "@vscode/vsce": "^3.6.2",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "vsce": "^2.15.0"
   }
 }
