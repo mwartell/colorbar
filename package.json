@@ -14,7 +14,7 @@
   "icon": "images/colorbar-logo.png",
   "main": "./out/extension.js",
   "activationEvents": [
-    "onCommand:colorbar.apply"
+
   ],
   "contributes": {
     "commands": [

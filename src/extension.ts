@@ -11,6 +11,7 @@ This command updates these settings in .vscode/settings.json:
 - workbench.colorCustomizations.titleBar.inactiveForeground => auto (black/white for contrast)
 - workbench.colorCustomizations.activityBar.background => #RRGGBB
 - workbench.colorCustomizations.activityBar.foreground => auto (black/white for contrast)
+- workbench.colorCustomizations.activityBar.activeBackground => lighter/darker variant based on foreground
 
 Use Apply to save, Reset to remove these keys, or Cancel/Escape to revert to the previous values.`;
 
@@ -66,13 +67,16 @@ async function pickHexColorWebview(defaultColor: string): Promise<void> {
         const active = sixHex;
         const inactive = `${sixHex}a4`;
         const fg = pickContrastingForeground(sixHex);
+        // Make the active item background a bit lighter if text is white, darker if text is black
+        const actItem = fg === '#ffffff' ? adjustLightness(sixHex, 0.12) : adjustLightness(sixHex, -0.12);
         const patch: Record<string, string> = {
             'titleBar.activeBackground': active,
             'titleBar.inactiveBackground': inactive,
             'titleBar.activeForeground': fg,
             'titleBar.inactiveForeground': fg,
             'activityBar.background': active,
-            'activityBar.foreground': fg
+            'activityBar.foreground': fg,
+            'activityBar.activeBackground': actItem
         };
         await mergeColorCustomizations(patch);
     };
@@ -155,8 +159,7 @@ function getWebviewContent(webview: vscode.Webview, initial: string, nonce: stri
     <div class="row">
             <input id="picker" type="color" value="${initial}">
             <input id="hex" type="text" value="${initial}">
-        </div>
-        <div class="buttons">
+
             <button id="ok">Apply</button>
             <button id="reset">Reset</button>
             <button id="cancel">Cancel</button>
@@ -237,6 +240,23 @@ function hexToRgb01(hex: string): { r: number; g: number; b: number } {
     const g = parseInt(six.slice(2, 4), 16) / 255;
     const b = parseInt(six.slice(4, 6), 16) / 255;
     return { r, g, b };
+}
+
+// Lighten/darken a color by a fractional amount (e.g., 0.12 to lighten 12%, -0.12 to darken 12%)
+function adjustLightness(hex: string, amount: number): string {
+    const six = toSixDigitHex(hex).slice(1);
+    let r = parseInt(six.slice(0, 2), 16);
+    let g = parseInt(six.slice(2, 4), 16);
+    let b = parseInt(six.slice(4, 6), 16);
+    const lighten = amount > 0;
+    const a = Math.min(1, Math.max(0, Math.abs(amount)));
+    const mix = (c: number) => {
+        const v = lighten ? Math.round(c + (255 - c) * a) : Math.round(c * (1 - a));
+        return Math.max(0, Math.min(255, v));
+    };
+    r = mix(r); g = mix(g); b = mix(b);
+    const toHex = (n: number) => n.toString(16).padStart(2, '0');
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
 }
 
 function getNonce(): string {
