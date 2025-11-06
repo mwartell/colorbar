@@ -26,14 +26,10 @@ clean:
 install: package
     code --install-extension "$(ls -t *.vsix | head -n1)"
 
-# Helper to publish (requires Marketplace publisher + PAT)
-# Usage: just publish            # defaults to patch
-#        just publish VERSION=minor
-#        just publish VERSION=1.2.3
 # Publish to the Marketplace (requires publisher + PAT)
 # Usage examples:
 #   just publish                 # uses default 'patch'
 #   just publish VERSION=minor
 #   just publish VERSION=1.2.3
 publish VERSION='patch':
-    npx @vscode/vsce publish {{VERSION}}
+    vsce publish {{VERSION}}
