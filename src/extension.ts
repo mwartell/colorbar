@@ -1,19 +1,9 @@
 import * as vscode from 'vscode';
 
-// Explanatory text shown above the color picker webview
-const INSTRUCTIONS = `Pick a color to customize your workspace UI.
-
-This command updates these settings in .vscode/settings.json:
-
-- workbench.colorCustomizations.titleBar.activeBackground => #RRGGBB
-- workbench.colorCustomizations.titleBar.inactiveBackground => #RRGGBBa4 (same color with alpha a4)
-- workbench.colorCustomizations.titleBar.activeForeground => auto (black/white for contrast)
-- workbench.colorCustomizations.titleBar.inactiveForeground => auto (black/white for contrast)
-- workbench.colorCustomizations.activityBar.background => #RRGGBB
-- workbench.colorCustomizations.activityBar.foreground => auto (black/white for contrast)
-- workbench.colorCustomizations.activityBar.activeBackground => lighter/darker variant based on foreground
-
-Use Apply to save, Reset to remove these keys, or Cancel/Escape to revert to the previous values.`;
+// Explanatory text shown above the color picker webview (supports HTML)
+const INSTRUCTIONS = `<h1>Pick a color to customize your workspace UI.</h1>
+<p>This will change workbench.colorCustomizations in your workspace settings.json. This allows you to quickly distinguish different VS Code windows by color-coding the title bar and activity bar.</p>
+<p>Use Apply to save, Reset to remove these keys, or Cancel/Escape to revert to the previous values.</p>`;
 
 export function activate(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('colorbar.apply', async () => {
