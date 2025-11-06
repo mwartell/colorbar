@@ -3,7 +3,7 @@
   "displayName": "Colorbar",
   "description": "Apply workbench.colorCustomizations to the current workspace",
   "version": "0.0.1",
-  "publisher": "your-publisher",
+  "publisher": "mwartell",
   "license": "MIT",
   "engines": {
     "vscode": "^1.85.0"
@@ -38,8 +38,9 @@
   "homepage": "https://github.com/mwartell/colorbar#readme",
   "devDependencies": {
     "@types/node": "^24.10.0",
-    "@types/vscode": "^1.105.0",
+    "@types/vscode": "^1.85.0",
     "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.6.2",
     "typescript": "^5.9.3"
   }
 }
