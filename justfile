@@ -6,17 +6,9 @@ set shell := ["bash", "-cu"]
 # Default target builds a VSIX
 default: package
 
-# Install dependencies
-deps:
-    npm install
-
-# Compile TypeScript to out/
-build: deps
-    npm run compile
-
 # Create a VSIX in the repo root (runs build first)
-package: build
-    npx @vscode/vsce package
+package:
+    vsce package
 
 # Remove build artifacts and packaged VSIX files
 clean:
