@@ -60,3 +60,15 @@ MIT - See [LICENSE.md](LICENSE.md) for details.
 ## Issues & Contributions
 
 Found a bug or have a feature request? Please open an issue on [GitHub](https://github.com/mwartell/colorbar/issues).
+
+## Safety and Transparency
+
+
+- **Code footprint:** The implementation is a [single TypeScript file][ts] responsible for reading settings and applying `workbench.colorCustomizations`. No additional runtime scripts or bundled native code are included.
+- **Permissions:** No file system, network, telemetry, shell, or debug APIs are used. The extension does not read your code, modify files, or send data anywhere.
+- **Telemetry:** No analytics or tracking is collected. There are no calls to remote endpoints.
+- **Build transparency:** The published package is built with the standard VS Code extension tooling. You can reproduce the build locally and compare the resulting `.vsix`.
+- **Changelog discipline:** Changes are documented release by release so you can verify that no new capabilities or sensitive APIs were added unexpectedly.
+- **Security reporting:** Vulnerabilities or concerns can be reported via the repository’s issue tracker. Responsible disclosure is appreciated.
+
+[ts]: ./src/extension.ts

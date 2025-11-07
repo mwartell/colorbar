@@ -1,5 +1,46 @@
 import * as vscode from 'vscode';
 
+/**
+ * Colorbar Extension
+ *
+ * PURPOSE:
+ * This extension provides a single command to apply color customizations to the VS Code workspace UI.
+ * It allows you to quickly distinguish different VS Code windows by color-coding the title bar and activity bar.
+ *
+ * DATA FLOW:
+ * - Reads current workspace settings from `workbench.colorCustomizations` (workspace scope only)
+ * - Displays a webview with a color picker for user selection
+ * - Applies chosen colors by updating `workbench.colorCustomizations` in workspace settings.json
+ * - All changes are scoped to the active workspace and can be fully reverted
+ *
+ * NON-GOALS (what this extension will never do):
+ * - Read or modify your code files
+ * - Send network requests or collect telemetry
+ * - Access file system beyond VS Code configuration APIs
+ * - Execute shell commands or spawn processes
+ * - Access sensitive APIs (debug, terminal content, authentication)
+ *
+ * VS CODE APIs USED:
+ * - commands.registerCommand: Register the single 'colorbar.apply' command
+ * - workspace.getConfiguration: Read and update workspace settings
+ * - window.createWebviewPanel: Display the color picker UI
+ * - window.showInformationMessage/showErrorMessage: User feedback
+ *
+ * CONFIGURATION KEYS:
+ * This extension only modifies these specific keys in workbench.colorCustomizations:
+ * - titleBar.activeBackground
+ * - titleBar.inactiveBackground
+ * - titleBar.activeForeground
+ * - titleBar.inactiveForeground
+ * - activityBar.background
+ * - activityBar.foreground
+ * - activityBar.activeBackground
+ *
+ * ERROR HANDLING:
+ * All operations are contained. Failures do not persist changes and are reported to the user.
+ * The webview provides Cancel functionality to restore previous settings if needed.
+ */
+
 // Explanatory text shown above the color picker webview (supports HTML)
 const INSTRUCTIONS = `<h1>Pick a color to customize your workspace UI</h1>
 <p>This will change workbench.colorCustomizations in your workspace settings.json. This allows you to quickly distinguish different VS Code windows by color-coding the title bar and activity bar.</p>
