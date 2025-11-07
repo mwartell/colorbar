@@ -1,10 +1,10 @@
 import * as vscode from 'vscode';
 
 // Explanatory text shown above the color picker webview (supports HTML)
-const INSTRUCTIONS = `<h1>Pick a color to customize your workspace UI.</h1>
+const INSTRUCTIONS = `<h1>Pick a color to customize your workspace UI</h1>
 <p>This will change workbench.colorCustomizations in your workspace settings.json. This allows you to quickly distinguish different VS Code windows by color-coding the title bar and activity bar.</p>
+<p>You can pick one of the preset color swatches to use as a starting point and then fine-tune it using the color picker or hex input.</p>
 <p>Use Apply to save, Reset to remove these keys, or Cancel/Escape to revert to the previous values.</p>`;
-
 export function activate(context: vscode.ExtensionContext) {
     const disposable = vscode.commands.registerCommand('colorbar.apply', async () => {
         try {
@@ -23,6 +23,17 @@ export function activate(context: vscode.ExtensionContext) {
 
     context.subscriptions.push(disposable);
 }
+
+const palette: string[] = [
+    "#e6a3a3", // 0°
+    "#e6dba3", // 45°
+    "#c3e6a3", // 90°
+    "#a3e6bb", // 135°
+    "#a3e6e6", // 180°
+    "#a3bbe6", // 225°
+    "#c3a3e6", // 270°
+    "#e6a3db"  // 315°
+];
 
 
 
@@ -125,6 +136,8 @@ function getWebviewContent(webview: vscode.Webview, initial: string, nonce: stri
         `script-src 'nonce-${nonce}';`
     ].join(' ');
 
+    const paletteJson = JSON.stringify(palette);
+
     return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,14 +149,30 @@ function getWebviewContent(webview: vscode.Webview, initial: string, nonce: stri
         .row { display: flex; align-items: center; gap: 12px; }
         input[type=color] { width: 48px; height: 32px; border: none; background: transparent; }
         input[type=text] { width: 110px; }
-    .instructions { margin-bottom: 12px; white-space: pre-line; line-height: 1.35; }
-    .buttons { margin-top: 16px; display: flex; gap: 8px; }
+        .instructions { margin-bottom: 12px; white-space: pre-line; line-height: 1.35; }
+        .instructions h1 { margin: 0 0 8px 0; }
+        .instructions p { margin: 4px 0; max-width: 45em; }
+        .buttons { margin-top: 16px; display: flex; gap: 8px; }
         button { padding: 6px 10px; }
+        .palette { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+        .palette-swatch {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--vscode-widget-border);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .palette-swatch:hover {
+            transform: scale(1.2);
+            border-color: var(--vscode-focusBorder);
+        }
     </style>
     <title>Pick Color</title>
     </head>
     <body>
     <div class="instructions">${instructions}</div>
+    <div class="palette" id="palette"></div>
     <div class="row">
             <input id="picker" type="color" value="${initial}">
             <input id="hex" type="text" value="${initial}">
@@ -159,6 +188,22 @@ function getWebviewContent(webview: vscode.Webview, initial: string, nonce: stri
             const ok = document.getElementById('ok');
             const reset = document.getElementById('reset');
             const cancel = document.getElementById('cancel');
+            const paletteContainer = document.getElementById('palette');
+            const paletteColors = ${paletteJson};
+
+            // Render palette swatches
+            paletteColors.forEach(color => {
+                const swatch = document.createElement('div');
+                swatch.className = 'palette-swatch';
+                swatch.style.backgroundColor = color;
+                swatch.title = color;
+                swatch.addEventListener('click', () => {
+                    hex.value = color;
+                    picker.value = color;
+                    preview();
+                });
+                paletteContainer.appendChild(swatch);
+            });
 
             function toSix(h){
                 h = (h || '').trim();
