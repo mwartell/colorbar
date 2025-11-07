@@ -2,6 +2,8 @@
 
 Quickly customize your VS Code workspace colors to visually distinguish between different projects and windows.
 
+![alt text](images/colorbar-msw-screenshot.png)
+
 ## Features
 
 **Color-code your workspaces** to instantly identify which project you're working on. Colorbar applies custom colors to your title bar and activity bar, making it easy to manage multiple VS Code windows.
@@ -11,6 +13,7 @@ Quickly customize your VS Code workspace colors to visually distinguish between 
 - Smart contrast detection: ensures text remains readable
 - Workspace-specific: settings that persist across sessions
 - One-click reset: to restore default colors
+
 ## Usage
 
 1. Open the Command Palette (`Cmd+Shift+P` on macOS, `Ctrl+Shift+P` on Windows/Linux)
