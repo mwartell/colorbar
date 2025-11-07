@@ -24,9 +24,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 }
 
-export function deactivate() {
-    // no-op
-}
+
 
 async function pickHexColorWebview(defaultColor: string): Promise<void> {
     const panel = vscode.window.createWebviewPanel(
