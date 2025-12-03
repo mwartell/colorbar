@@ -66,6 +66,17 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 const palette: string[] = [
+    // Row 1: Same hues at 90% saturation, ~75% luminance (vibrant variant)
+    "#f78080", // 0°
+    "#f7e680", // 45°
+    "#b3f780", // 90°
+    "#80f7b3", // 135°
+    "#80f7f7", // 180°
+    "#80b3f7", // 225°
+    "#b380f7", // 270°
+    "#f780e6", // 315°
+
+    // Row 2: Original palette - HSL hues at ~75% luminance, ~50% saturation
     "#e6a3a3", // 0°
     "#e6dba3", // 45°
     "#c3e6a3", // 90°
@@ -73,7 +84,27 @@ const palette: string[] = [
     "#a3e6e6", // 180°
     "#a3bbe6", // 225°
     "#c3a3e6", // 270°
-    "#e6a3db"  // 315°
+    "#e6a3db", // 315°
+
+    // Row 3: Same hues at 50% luminance (darker variant)
+    "#bf4040", // 0°
+    "#bfaa40", // 45°
+    "#6abf40", // 90°
+    "#40bf6a", // 135°
+    "#40bfbf", // 180°
+    "#406abf", // 225°
+    "#6a40bf", // 270°
+    "#bf40aa", // 315°
+
+    // Row 4: Same hues at 30% luminance (darkest variant)
+    "#732626", // 0°
+    "#736626", // 45°
+    "#407326", // 90°
+    "#267340", // 135°
+    "#267373", // 180°
+    "#264073", // 225°
+    "#402673", // 270°
+    "#732666"  // 315°
 ];
 
 
@@ -195,7 +226,7 @@ function getWebviewContent(webview: vscode.Webview, initial: string, nonce: stri
         .instructions p { margin: 4px 0; max-width: 45em; }
         .buttons { margin-top: 16px; display: flex; gap: 8px; }
         button { padding: 6px 10px; }
-        .palette { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+        .palette { display: grid; grid-template-columns: repeat(8, 32px); gap: 6px; margin-bottom: 16px; }
         .palette-swatch {
             width: 32px;
             height: 32px;
