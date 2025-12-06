@@ -34,6 +34,13 @@ Perfect for:
 - Organizing personal and work projects
 - Color-coding by language, framework, or project type
 
+### Colorbar Alternatives
+
+The [Peacock extension](https://marketplace.visualstudio.com/items?itemName=johnpapa.vscode-peacock) is better documented, more feature-rich, has a bunch of configuration options, has millions of of installations, and is actively maintained. If you need more advanced features or customization options, consider using Peacock instead.
+
+Colorbar has the dubious advantage of being dirt simple by comparison.
+
+
 ## Commands
 
 - `colorbar.apply` - **Colorbar: Apply Workspace Color Customizations**
